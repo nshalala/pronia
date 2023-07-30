@@ -16,4 +16,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Manage\Data\" />
+    <Folder Include="Areas\Manage\Models\" />
+    <Folder Include="wwwroot\assets\imgs\" />
+  </ItemGroup>
+
 </Project>

@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Pronia.DataAccess;
 
 namespace Pronia.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ProniaDbContext _context;
+        public HomeController(ProniaDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Sliders.ToListAsync());
         }
     }
 }
