@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Pronia.DataAccess;
+using Pronia.Services.Implementations;
+using Pronia.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ISliderService, SliderService>();
+
 builder.Services.AddDbContext<ProniaDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"));   

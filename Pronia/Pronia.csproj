@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Areas\Manage\Data\" />
     <Folder Include="Areas\Manage\Models\" />
+    <Folder Include="ExtensionServices\" />
     <Folder Include="wwwroot\assets\imgs\" />
   </ItemGroup>
 
