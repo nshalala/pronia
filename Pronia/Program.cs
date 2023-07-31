@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Pronia.DataAccess;
+using Pronia.ExtensionServices.Interfaces;
 using Pronia.Services.Implementations;
 using Pronia.Services.Interfaces;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddDbContext<ProniaDbContext>(opt =>
 {

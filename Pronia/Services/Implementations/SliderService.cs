@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pronia.DataAccess;
+using Pronia.ExtensionServices.Interfaces;
 using Pronia.Models;
 using Pronia.Services.Interfaces;
 using Pronia.ViewModels.SliderVMs;
@@ -10,19 +11,19 @@ public class SliderService : ISliderService
 {
     private readonly ProniaDbContext _context;
     private readonly IWebHostEnvironment _env;
-    public SliderService(ProniaDbContext context, IWebHostEnvironment env)
+    private readonly IFileService _fileService;
+    public SliderService(ProniaDbContext context, IWebHostEnvironment env, IFileService fileService)
     {
         _context = context;
         _env = env;
+        _fileService = fileService;
     }
     public async Task Create(CreateSliderVM sliderVm)
     {
-        using FileStream fs = new FileStream(Path.Combine(_env.WebRootPath, "assets", "imgs",
-                sliderVm.ImageFile.FileName), FileMode.Create);
-        await sliderVm.ImageFile.CopyToAsync(fs);
         await _context.Sliders.AddAsync(new Slider
         {
-            ImageUrl = sliderVm.ImageFile.FileName,
+            ImageUrl = await _fileService.UploadAsync(sliderVm.ImageFile, Path.Combine("assets", "imgs"), 
+            "image", 2),
             Title = sliderVm.Title,
             Offer = sliderVm.Offer,
             Description = sliderVm.Description,
