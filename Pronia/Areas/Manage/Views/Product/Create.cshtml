@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+@model CreateProductVM
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="Title" class="form-label">Name</label>
+        <input class="form-control" asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">Price</label>
+        <input class="form-control" asp-for="Price" />
+        <span class="text-danger" asp-validation-for="Price"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">Description</label>
+        <input class="form-control" asp-for="Description" />
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">Rating</label>
+        <input class="form-control" asp-for="Rating" />
+        <span class="text-danger" asp-validation-for="Rating"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">StockCount</label>
+        <input class="form-control" asp-for="StockCount" />
+        <span class="text-danger" asp-validation-for="StockCount"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">Discount</label>
+        <input class="form-control" asp-for="Discount" />
+        <span class="text-danger" asp-validation-for="Discount"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">MainImage</label>
+        <input class="form-control" asp-for="MainImageFile" />
+        <span class="text-danger" asp-validation-for="MainImageFile"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">HoverImage</label>
+        <input class="form-control" asp-for="HoverImageFile" />
+        <span class="text-danger" asp-validation-for="HoverImageFile"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Title" class="form-label">ImageFiles</label>
+        <input class="form-control" asp-for="ImageFiles" />
+        <span class="text-danger" asp-validation-for="ImageFiles"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

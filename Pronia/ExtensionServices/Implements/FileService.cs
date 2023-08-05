@@ -13,12 +13,12 @@ public class FileService : IFileService
         _env = env;
     }
 
-    public void Delete(string path)
+    public void Delete(string? path)
     {
         if (String.IsNullOrEmpty(path) || String.IsNullOrWhiteSpace(path)) 
             throw new NullReferenceException();
         if(!path.StartsWith(_env.WebRootPath))
-            path = Path.Combine(_env.WebRootPath, path);
+            path = Path.Combine(_env.WebRootPath, Path.Combine("assets", "imgs","products", path));
         if(File.Exists(path))
             File.Delete(path);
     }
@@ -29,7 +29,7 @@ public class FileService : IFileService
         await file.CopyToAsync(fs);
     }
 
-    public async Task<string> UploadAsync(IFormFile file, string path, string contentType, int mb)
+    public async Task<string> UploadAsync(IFormFile file, string path, string contentType = "image", int mb = 2)
     {
         if (!file.isValidSize(mb)) throw new SizeLimitException("File size should not exceed " + mb);
         if (!file.isValidType(contentType)) throw new WrongTypeException("Wrong file type");
@@ -42,9 +42,9 @@ public class FileService : IFileService
         => Guid.NewGuid() + Path.GetExtension(file.FileName);
     private void _checkDirectory(string path)
     {
-        if (Directory.Exists(path))
+        if (!Directory.Exists(Path.Combine(_env.WebRootPath, path)))
         {
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(Path.Combine(_env.WebRootPath, path));
         }
     }
 }

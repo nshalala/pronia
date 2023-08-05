@@ -1,19 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia.DataAccess;
+using Pronia.Services.Interfaces;
+using Pronia.ViewModels.HomeVMs;
 
 namespace Pronia.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ProniaDbContext _context;
-        public HomeController(ProniaDbContext context)
+        private readonly ISliderService _sliderService;
+
+        private readonly IProductService _productService;
+        public HomeController(ISliderService sliderService, IProductService productService)
         {
-            _context = context;
+            _sliderService = sliderService;
+            _productService = productService;
         }
+
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sliders.ToListAsync());
+            HomeVM vm = new HomeVM
+            {
+                Sliders = await _sliderService.GetAll(),
+                Products = await _productService.GetAllAsync(false)
+            };
+            return View(vm);
         }
     }
 }

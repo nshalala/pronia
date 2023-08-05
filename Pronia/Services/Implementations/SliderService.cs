@@ -22,13 +22,13 @@ public class SliderService : ISliderService
     {
         await _context.Sliders.AddAsync(new Slider
         {
-            ImageUrl = await _fileService.UploadAsync(sliderVm.ImageFile, Path.Combine("assets", "imgs"), 
+            ImageUrl = await _fileService.UploadAsync(sliderVm.ImageFile, Path.Combine("assets", "imgs", "sliders"), 
             "image", 2),
             Title = sliderVm.Title,
             Offer = sliderVm.Offer,
             Description = sliderVm.Description,
             ButtonText = sliderVm.ButtonText
-        }); ;
+        }); 
         await _context.SaveChangesAsync();
     }
 
@@ -59,7 +59,7 @@ public class SliderService : ISliderService
         entity.Description = sliderVm.Description;
         entity.Offer = sliderVm.Offer;
         entity.ButtonText = sliderVm.ButtonText;
-        //entity.ImageUrl = sliderVm.ImageUrl;
+        entity.ImageUrl = await _fileService.UploadAsync(sliderVm.ImageFile, Path.Combine("assets", "imgs"));
         await _context.SaveChangesAsync();
     }
 }
