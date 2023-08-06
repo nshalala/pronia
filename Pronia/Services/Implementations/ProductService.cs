@@ -54,7 +54,8 @@ public class ProductService : IProductService
 
     public async Task Delete(int id)
     {
-        var entity = await GetByIdAsync(id);
+        var entity = await GetTable.Include(p => p.ProductImages).SingleOrDefaultAsync(p => p.Id == id);
+        if (entity == null) throw new NotFoundException("product not found");
         _fileService.Delete(entity.MainImage);
         if(entity.HoverImage != null) _fileService.Delete(entity.HoverImage);
         if(entity.ProductImages != null)
@@ -64,7 +65,7 @@ public class ProductService : IProductService
                 _fileService.Delete(prodImg.Name);
             }
         }
-        _context.Remove(entity);
+        _context.Products.Remove(entity);
         await _context.SaveChangesAsync();
     }
     public async Task SoftDelete(int id)
@@ -91,8 +92,46 @@ public class ProductService : IProductService
         return entity;
     }
 
-    public Task Update(UpdateProductVM productVm)
+    public async Task Update(int? id, UpdateProductVM vm)
     {
-        throw new NotImplementedException();
+        var entity = await GetByIdAsync(id);
+        entity.Name = vm.Name;
+        entity.Price = vm.Price;
+        entity.Rating = vm.Rating;
+        entity.Description = vm.Description;
+        entity.Discount = vm.Discount;
+        if(vm.MainImageFile != null)
+        {
+            _fileService.Delete(entity.MainImage);
+            entity.MainImage = await _fileService.UploadAsync(vm.MainImageFile, Path.Combine("assets", "imgs", "products"));
+        }
+        if(vm.HoverImageFile != null)
+        {
+            if(entity.HoverImage != null) _fileService.Delete(entity.HoverImage);
+            entity.HoverImage = await _fileService.UploadAsync(vm.HoverImageFile, Path.Combine("assets", "imgs", "products"));
+        }
+        if(vm.ProductImageFiles != null)
+        {
+            if (entity.ProductImages == null) entity.ProductImages = new List<ProductImage>();
+            foreach (var imgs in vm.ProductImageFiles)
+            {
+                ProductImage img = new ProductImage
+                {
+                    Name = await _fileService.UploadAsync(imgs, Path.Combine("assets", "imgs", "products"))
+                };
+                entity.ProductImages.Add(img);
+            }
+        }
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteImage(int? id)
+    {
+        if (id == null || id <= 0) throw new ArgumentNullOrNegativeException("id is not valid");
+        var prodImg = await _context.ProductImages.FindAsync(id);
+        if (prodImg == null) throw new NotFoundException("Image not found");
+        _fileService.Delete(prodImg.Name);
+        _context.ProductImages.Remove(prodImg);
+        await _context.SaveChangesAsync();
     }
 }

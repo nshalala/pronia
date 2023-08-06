@@ -35,7 +35,7 @@
                 <td>@product.Rating</td>
                 <td>@product.StockCount</td>
                 <td>@product.Discount</td>
-                <td><img src="~/assets/imgs/products/@product.MainImage" width="50" /></td>
+                <td><img src="~/@product.MainImage" width="50" /></td>
                 <td><a asp-area="Manage" asp-controller="Product" asp-action="Update" asp-route-Id="@product.Id" class="btn btn-warning">Update</a></td>
                 @if (product.IsDeleted)
                 {

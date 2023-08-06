@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Pronia.ExtensionServices.Interfaces;
 using Pronia.Helpers.Exceptions;
 using Pronia.Helpers.Extensions;
 using Pronia.Models;
@@ -62,5 +64,39 @@ public class ProductController : Controller
     {
         await _productService.SoftDelete(id);
         return RedirectToAction(nameof(Index));
+    }
+    public async Task<IActionResult> Update(int? id)
+    {
+        if (id <= 0 || id == null) return BadRequest();
+        var entity = await _productService.GetTable.Include(p => p.ProductImages).SingleOrDefaultAsync(p=>p.Id == id);
+        if (entity == null) return NotFound();
+        UpdateProductVM vm = new UpdateProductVM
+        {
+            Name = entity.Name,
+            Description = entity.Description,
+            Price = entity.Price,
+            Discount = entity.Discount,
+            Rating = entity.Rating,
+            StockCount = entity.StockCount,
+            ProductImages = entity.ProductImages,
+            HoverImage = entity.HoverImage,
+            MainImage = entity.MainImage
+        };
+        return View(vm);
+    }
+    [HttpPost]
+    public async Task<IActionResult> Update(int? id, UpdateProductVM vm)
+    {
+        if (id == null || id <= 0) return BadRequest();
+        var entity = await _productService.GetByIdAsync(id);
+        if (entity == null) return NotFound();
+        await _productService.Update(id, vm);
+        return RedirectToAction(nameof(Index));
+    }
+    public async Task<IActionResult> DeleteImage(int? id)
+    {
+        if (id == null || id <= 0) return BadRequest();
+        await _productService.DeleteImage(id);
+        return Ok();
     }
 }

@@ -18,7 +18,7 @@ public class FileService : IFileService
         if (String.IsNullOrEmpty(path) || String.IsNullOrWhiteSpace(path)) 
             throw new NullReferenceException();
         if(!path.StartsWith(_env.WebRootPath))
-            path = Path.Combine(_env.WebRootPath, Path.Combine("assets", "imgs","products", path));
+            path = Path.Combine(_env.WebRootPath, path);
         if(File.Exists(path))
             File.Delete(path);
     }
@@ -35,8 +35,9 @@ public class FileService : IFileService
         if (!file.isValidType(contentType)) throw new WrongTypeException("Wrong file type");
         string newFileName = _renameFile(file);
         _checkDirectory(path);
-        await SaveAsync(file, Path.Combine(path, newFileName));
-        return newFileName;
+        path = Path.Combine(path, newFileName);
+        await SaveAsync(file, path);
+        return path;
     }
     private string _renameFile(IFormFile file)
         => Guid.NewGuid() + Path.GetExtension(file.FileName);
