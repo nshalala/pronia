@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+@model CreateCategoryVM
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="Title" class="form-label">Name</label>
+        <input class="form-control" asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

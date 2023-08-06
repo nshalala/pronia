@@ -22,5 +22,6 @@ namespace Pronia.Models
         public string MainImage { get; set; }
         public string? HoverImage { get; set; }
         public ICollection<ProductImage>? ProductImages { get; set; }
+        public ICollection<ProductCategory>? ProductCategories { get; set; }
     }
 }

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model List<Category>
+
+<a asp-area="Manage" asp-controller="Category" asp-action="Create" class="btn btn-success my-2">Create</a>
+<table class="table table-primary">
+    <thead>
+        <tr class="text-center">
+            <th>Id</th>
+            <th>Category Name</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cat in Model)
+        {
+            <tr class="text-center">
+                <td>@cat.Id</td>
+                <td>@cat.Name</td>
+                <td><a asp-area="Manage" asp-controller="Category" asp-action="Update" asp-route-Id="@cat.Id" class="btn btn-warning">Update</a></td>
+                <td><a asp-area="Manage" asp-controller="Category" asp-action="Delete" asp-route-Id="@cat.Id" class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
